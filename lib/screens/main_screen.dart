@@ -8,7 +8,7 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Movie List')),
-      body: const MyHomePage(title: 'Flutter Demo Home Page'),
+      body: const MovieListMobile(),
     );
   }
 }
@@ -18,9 +18,10 @@ class MovieListMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Movie List')),
-      body: const MyHomePage(title: 'Flutter Demo Home Page'),
+    return Column(
+      children: [
+        const Text('This is the list of the movies'),
+      ],
     );
   }
 }
