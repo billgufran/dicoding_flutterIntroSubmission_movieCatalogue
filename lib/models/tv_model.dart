@@ -1,52 +1,47 @@
-import 'dart:ffi';
-
-class MovieModel {
-  bool adult;
+class TvModel {
   String backdropPath;
+  String firstAirDate;
   List<int> genreIds;
   int id;
+  String name;
+  List<String> originCountry;
   String originalLanguage;
-  String originalTitle;
+  String originalName;
   String overview;
   double popularity;
   String posterPath;
-  String releaseDate;
-  String title;
-  bool video;
   double voteAverage;
   int voteCount;
 
-  MovieModel({
-    required this.adult,
+  TvModel({
     required this.backdropPath,
+    required this.firstAirDate,
     required this.genreIds,
     required this.id,
+    required this.name,
+    required this.originCountry,
     required this.originalLanguage,
-    required this.originalTitle,
+    required this.originalName,
     required this.overview,
     required this.popularity,
     required this.posterPath,
-    required this.releaseDate,
-    required this.title,
-    required this.video,
     required this.voteAverage,
     required this.voteCount,
   });
 
-  factory MovieModel.fromJson(Map<String, dynamic> json) {
-    return MovieModel(
-      adult: json['adult'],
+  factory TvModel.fromJson(Map<String, dynamic> json) {
+    return TvModel(
       backdropPath: json['backdrop_path'],
+      firstAirDate: json['first_air_date'],
       genreIds: json['genre_ids'],
       id: json['id'],
+      name: json['name'],
+      originCountry: json['origin_country'],
       originalLanguage: json['original_language'],
-      originalTitle: json['original_title'],
+      originalName: json['original_name'],
       overview: json['overview '],
       popularity: json['popularity'],
       posterPath: json['poster_path'],
-      releaseDate: json['release_date'],
-      title: json['title'],
-      video: json['video'],
       voteAverage: json['vote_average'],
       voteCount: json['vote_count'],
     );
