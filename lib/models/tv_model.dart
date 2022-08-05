@@ -1,32 +1,32 @@
 class TvModel {
-  String backdropPath;
-  String firstAirDate;
-  List<int> genreIds;
-  int id;
-  String name;
-  List<String> originCountry;
-  String originalLanguage;
-  String originalName;
-  String overview;
-  double popularity;
-  String posterPath;
-  double voteAverage;
-  int voteCount;
+  String? backdropPath;
+  String? firstAirDate;
+  List<dynamic>? genreIds;
+  int? id;
+  String? name;
+  List<String>? originCountry;
+  String? originalLanguage;
+  String? originalName;
+  String? overview;
+  num? popularity;
+  String? posterPath;
+  num? voteAverage;
+  int? voteCount;
 
   TvModel({
-    required this.backdropPath,
-    required this.firstAirDate,
-    required this.genreIds,
-    required this.id,
-    required this.name,
-    required this.originCountry,
-    required this.originalLanguage,
-    required this.originalName,
-    required this.overview,
-    required this.popularity,
-    required this.posterPath,
-    required this.voteAverage,
-    required this.voteCount,
+    this.backdropPath,
+    this.firstAirDate,
+    this.genreIds,
+    this.id,
+    this.name,
+    this.originCountry,
+    this.originalLanguage,
+    this.originalName,
+    this.overview,
+    this.popularity,
+    this.posterPath,
+    this.voteAverage,
+    this.voteCount,
   });
 
   factory TvModel.fromJson(Map<String, dynamic> json) {
