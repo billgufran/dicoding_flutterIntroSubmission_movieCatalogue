@@ -39,7 +39,7 @@ class MovieModel {
       id: json['id'],
       originalLanguage: json['original_language'],
       originalTitle: json['original_title'],
-      overview: json['overview '],
+      overview: json['overview'],
       popularity: json['popularity'],
       posterPath: json['poster_path'],
       releaseDate: json['release_date'],
