@@ -53,7 +53,6 @@ class DetailScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w300,
-                      fontFamily: 'Roboto',
                       color: CustomColors.textColor,
                     ),
                   ),

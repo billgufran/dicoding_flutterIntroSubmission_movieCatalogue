@@ -121,7 +121,10 @@ class MovieCard extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 movie.releaseDate?.split('-')[0] ?? "subtitle",
-                style: const TextStyle(fontSize: 12),
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w300,
+                ),
               ),
             ],
           ),

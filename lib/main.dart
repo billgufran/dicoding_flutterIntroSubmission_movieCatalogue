@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: CustomColors.backgroundColor,
         brightness: Brightness.dark,
+        fontFamily: 'Roboto',
         textTheme: TextTheme(
           headline1: TextStyle(
             fontSize: 39,
@@ -32,7 +33,6 @@ class MyApp extends StatelessWidget {
           ),
           bodyText1: TextStyle(
             fontSize: 16,
-            fontFamily: 'Roboto',
             color: CustomColors.textColor,
             height: 1.35,
           ),
