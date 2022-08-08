@@ -4,19 +4,6 @@ import 'package:moviecatalogue/models/movie_model.dart';
 import 'package:moviecatalogue/configs/config.dart';
 import 'package:moviecatalogue/screens/detail_screen.dart';
 
-var h1 = const TextStyle(
-  fontSize: 39,
-  fontWeight: FontWeight.bold,
-  fontFamily: 'RobotoCondensed',
-  letterSpacing: 0.2,
-);
-
-var h2 = const TextStyle(
-  fontSize: 30,
-  fontWeight: FontWeight.bold,
-  fontFamily: 'RobotoCondensed',
-);
-
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
 
@@ -55,7 +42,11 @@ class FutureMobileView extends StatelessWidget {
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Discover', style: h1),
+        Padding(
+          padding: const EdgeInsets.only(
+              bottom: 32.0, top: 24.0, left: 16.0, right: 16.0),
+          child: Text('Discover', style: Theme.of(context).textTheme.headline1),
+        ),
         FutureBuilder<List<MovieModel>>(
           future: movieDiscoveryList,
           builder: (context, snapshot) {
@@ -63,15 +54,20 @@ class FutureMobileView extends StatelessWidget {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Movies', style: h2),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 16.0, right: 16.0, bottom: 8.0),
+                    child: Text('Movies',
+                        style: Theme.of(context).textTheme.headline2),
+                  ),
                   SizedBox(
                     height: 300,
                     child: Expanded(
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: 5,
+                        itemCount: 7,
                         itemBuilder: (context, index) {
-                          var currentMovie = snapshot.data![index];
+                          final MovieModel currentMovie = snapshot.data![index];
 
                           return MovieCard(movie: currentMovie);
                         },
@@ -98,7 +94,7 @@ class MovieCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(7),
+      padding: const EdgeInsets.only(left: 16.0),
       child: InkWell(
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
