@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moviecatalogue/models/movie_model.dart';
 import 'package:moviecatalogue/configs/config.dart';
+import 'package:moviecatalogue/theme/colors.dart';
 
 class DetailScreen extends StatelessWidget {
   final MovieModel movie;
@@ -25,21 +26,38 @@ class DetailScreen extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              decoration: ShapeDecoration(
+                color: CustomColors.backgroundColor,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(16.0),
+                    topRight: Radius.circular(16.0),
+                  ),
+                ),
+              ),
+              transform: Matrix4.translationValues(0.0, -50.0, 0.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 28.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     movie.title!,
-                    style: Theme.of(context).textTheme.headline5,
+                    style: Theme.of(context).textTheme.headline2,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 10),
                   Text(
                     movie.releaseDate!,
-                    style: Theme.of(context).textTheme.subtitle1,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w300,
+                      fontFamily: 'Roboto',
+                      color: CustomColors.textColor,
+                    ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 32),
                   Text(
                     movie.overview!,
                     style: Theme.of(context).textTheme.bodyText1,

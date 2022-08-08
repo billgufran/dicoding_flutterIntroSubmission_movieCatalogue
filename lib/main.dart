@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moviecatalogue/screens/main_screen.dart';
-
-const textColor = Color(0xFFfefefe);
+import 'package:moviecatalogue/theme/colors.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,27 +14,27 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xFF161622),
+        scaffoldBackgroundColor: CustomColors.backgroundColor,
         brightness: Brightness.dark,
-        textTheme: const TextTheme(
+        textTheme: TextTheme(
           headline1: TextStyle(
             fontSize: 39,
             fontWeight: FontWeight.bold,
             fontFamily: 'RobotoCondensed',
             letterSpacing: 0.2,
-            color: textColor,
+            color: CustomColors.textColor,
           ),
           headline2: TextStyle(
             fontSize: 30,
             fontWeight: FontWeight.bold,
             fontFamily: 'RobotoCondensed',
-            color: textColor,
+            color: CustomColors.textColor,
           ),
           bodyText1: TextStyle(
             fontSize: 16,
-            fontWeight: FontWeight.w500,
-            fontFamily: 'RobotoCondensed',
-            color: textColor,
+            fontFamily: 'Roboto',
+            color: CustomColors.textColor,
+            height: 1.35,
           ),
         ),
       ),
