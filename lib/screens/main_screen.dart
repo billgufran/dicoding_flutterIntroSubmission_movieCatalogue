@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:moviecatalogue/data/datasource.dart';
 import 'package:moviecatalogue/models/movie_model.dart';
 import 'package:moviecatalogue/configs/config.dart';
+import 'package:moviecatalogue/screens/detail_screen.dart';
 
 var h1 = const TextStyle(
   fontSize: 39,
@@ -98,29 +99,36 @@ class MovieCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(7),
-      child: SizedBox(
-        width: 150,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.network(
-                '${Config.mdbImageHost}/w342${movie.posterPath}',
-                fit: BoxFit.cover,
+      child: InkWell(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return DetailScreen(movie: movie);
+          }));
+        },
+        child: SizedBox(
+          width: 150,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.network(
+                  '${Config.mdbImageHost}/w342${movie.posterPath}',
+                  fit: BoxFit.cover,
+                ),
               ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              movie.title ?? "title",
-              style: const TextStyle(fontSize: 14),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              movie.releaseDate?.split('-')[0] ?? "subtitle",
-              style: const TextStyle(fontSize: 12),
-            ),
-          ],
+              const SizedBox(height: 8),
+              Text(
+                movie.title ?? "title",
+                style: const TextStyle(fontSize: 14),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                movie.releaseDate?.split('-')[0] ?? "subtitle",
+                style: const TextStyle(fontSize: 12),
+              ),
+            ],
+          ),
         ),
       ),
     );
