@@ -156,14 +156,6 @@ class FutureHorizontalMoviesList extends StatelessWidget {
                         width: 150.0,
                       ),
                     );
-
-                    // MovieCard(
-                    //   movie: currentMovie,
-                    //   width: 150.0,
-                    //   containerPadding: index == itemCount - 1
-                    //       ? const EdgeInsets.symmetric(horizontal: 16.0)
-                    //       : const EdgeInsets.only(left: 16.0),
-                    // );
                   },
                 ),
               ),
@@ -193,8 +185,6 @@ class FutureMoviesGrid extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Column(
-            // scrollDirection: Axis.vertical,
-            // shrinkWrap: true,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
@@ -203,19 +193,6 @@ class FutureMoviesGrid extends StatelessWidget {
                 child: Text(sectionTitle,
                     style: Theme.of(context).textTheme.headline2),
               ),
-              // Wrap(
-              //   spacing: 16.0,
-              //   alignment: WrapAlignment.spaceEvenly,
-              //   direction: Axis.horizontal,
-              //   children: snapshot.data!.map((movie) {
-              //     return Padding(
-              //         padding: const EdgeInsets.symmetric(vertical: 12.0),
-              //         child: MovieCard(
-              //             movie: movie,
-              //             width: 200,
-              //             containerPadding: EdgeInsets.zero));
-              //   }).toList(),
-              // ),
               GridView.extent(
                   scrollDirection: Axis.vertical,
                   childAspectRatio: 0.5,

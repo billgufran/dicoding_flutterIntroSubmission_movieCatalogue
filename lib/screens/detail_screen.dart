@@ -108,7 +108,6 @@ class DesktopView extends StatelessWidget {
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          // transform: Matrix4.translationValues(0.0, -60.0, 0.0),
           decoration: BoxDecoration(
             image: DecorationImage(
               image: NetworkImage(
