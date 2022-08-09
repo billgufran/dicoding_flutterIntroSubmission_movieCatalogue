@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moviecatalogue/Widgets/custom_app_bar.dart';
 import 'package:moviecatalogue/data/datasource.dart';
 import 'package:moviecatalogue/models/movie_model.dart';
 import 'package:moviecatalogue/configs/config.dart';
@@ -9,16 +10,14 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          if (constraints.maxWidth <= 600) {
-            return const MobileView();
-          } else {
-            return const DesktopView();
-          }
-        },
-      ),
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        if (constraints.maxWidth <= 600) {
+          return const MobileView();
+        } else {
+          return const DesktopView();
+        }
+      },
     );
   }
 }
@@ -43,23 +42,22 @@ class _DesktopViewState extends State<DesktopView> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(
-              bottom: 38.0, top: 27.0, left: 16.0, right: 16.0),
-          child: Text('Discover', style: Theme.of(context).textTheme.headline1),
-        ),
-        FutureMoviesGrid(
-          movieList: futureMovieNowPlayingList,
-          sectionTitle: 'Now Playing',
-        ),
-        const SizedBox(height: 34.0),
-        FutureMoviesGrid(
-          movieList: futureMovieTopRatedList,
-          sectionTitle: 'Top Rated',
-        ),
-      ],
+    return Scaffold(
+      appBar: const CustomAppBar(),
+      body: ListView(
+        children: [
+          const SizedBox(height: 38.0),
+          FutureMoviesGrid(
+            movieList: futureMovieNowPlayingList,
+            sectionTitle: 'Now Playing',
+          ),
+          const SizedBox(height: 34.0),
+          FutureMoviesGrid(
+            movieList: futureMovieTopRatedList,
+            sectionTitle: 'Top Rated',
+          ),
+        ],
+      ),
     );
   }
 }
@@ -84,30 +82,32 @@ class _MobileViewState extends State<MobileView> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                  bottom: 32.0, top: 24.0, left: 16.0, right: 16.0),
-              child: Text('Discover',
-                  style: Theme.of(context).textTheme.headline1),
-            ),
-            Column(
-              children: [
-                FutureHorizontalMoviesList(
-                  movieList: futureMovieNowPlayingList,
-                  sectionTitle: 'Now Playing',
-                ),
-                FutureHorizontalMoviesList(
-                  movieList: futureMovieTopRatedList,
-                  sectionTitle: 'Top Rated',
-                ),
-              ],
-            )
-          ],
+    return Scaffold(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                    bottom: 32.0, top: 24.0, left: 16.0, right: 16.0),
+                child: Text('Discover',
+                    style: Theme.of(context).textTheme.headline1),
+              ),
+              Column(
+                children: [
+                  FutureHorizontalMoviesList(
+                    movieList: futureMovieNowPlayingList,
+                    sectionTitle: 'Now Playing',
+                  ),
+                  FutureHorizontalMoviesList(
+                    movieList: futureMovieTopRatedList,
+                    sectionTitle: 'Top Rated',
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
