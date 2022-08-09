@@ -124,6 +124,8 @@ class FutureHorizontalMoviesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const itemCount = 7;
+
     return FutureBuilder<List<MovieModel>>(
       future: movieList,
       builder: (context, snapshot) {
@@ -141,11 +143,16 @@ class FutureHorizontalMoviesList extends StatelessWidget {
                 height: 300,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: 7,
+                  itemCount: itemCount,
                   itemBuilder: (context, index) {
                     final MovieModel currentMovie = snapshot.data![index];
 
-                    return MovieCard(movie: currentMovie);
+                    return MovieCard(
+                      movie: currentMovie,
+                      containerPadding: index == itemCount - 1
+                          ? const EdgeInsets.symmetric(horizontal: 16.0)
+                          : const EdgeInsets.only(left: 16.0),
+                    );
                   },
                 ),
               ),
@@ -185,10 +192,16 @@ class FutureMoviesGrid extends StatelessWidget {
                     style: Theme.of(context).textTheme.headline2),
               ),
               Wrap(
-                spacing: 6.0,
+                spacing: 16.0,
+                alignment: WrapAlignment.spaceEvenly,
                 direction: Axis.horizontal,
                 children: snapshot.data!.map((movie) {
-                  return MovieCard(movie: movie, width: 175);
+                  return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 12.0),
+                      child: MovieCard(
+                          movie: movie,
+                          width: 200,
+                          containerPadding: EdgeInsets.zero));
                 }).toList(),
               ),
             ],
@@ -205,13 +218,18 @@ class FutureMoviesGrid extends StatelessWidget {
 class MovieCard extends StatelessWidget {
   final MovieModel movie;
   final double? width;
+  final EdgeInsetsGeometry? containerPadding;
 
-  const MovieCard({Key? key, required this.movie, this.width = 150.0})
+  const MovieCard(
+      {Key? key,
+      required this.movie,
+      this.width = 150.0,
+      this.containerPadding = const EdgeInsets.only(left: 16.0)})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 16.0),
+      padding: containerPadding!,
       child: InkWell(
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -220,7 +238,6 @@ class MovieCard extends StatelessWidget {
         },
         child: SizedBox(
           width: width,
-          height: width! * 1.5,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
