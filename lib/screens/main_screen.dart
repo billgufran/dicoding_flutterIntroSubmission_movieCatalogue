@@ -9,8 +9,57 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: MobileView(),
+    return Scaffold(
+      body: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          if (constraints.maxWidth <= 600) {
+            return const MobileView();
+          } else {
+            return const DesktopView();
+          }
+        },
+      ),
+    );
+  }
+}
+
+class DesktopView extends StatefulWidget {
+  const DesktopView({Key? key}) : super(key: key);
+
+  @override
+  State<DesktopView> createState() => _DesktopViewState();
+}
+
+class _DesktopViewState extends State<DesktopView> {
+  late Future<List<MovieModel>> futureMovieNowPlayingList;
+  late Future<List<MovieModel>> futureMovieTopRatedList;
+
+  @override
+  void initState() {
+    super.initState();
+    futureMovieNowPlayingList = fetchMovieNowPlaying();
+    futureMovieTopRatedList = fetchMovieTopRated();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(
+              bottom: 38.0, top: 27.0, left: 16.0, right: 16.0),
+          child: Text('Discover', style: Theme.of(context).textTheme.headline1),
+        ),
+        FutureMoviesGrid(
+          movieList: futureMovieNowPlayingList,
+          sectionTitle: 'Now Playing',
+        ),
+        const SizedBox(height: 34.0),
+        FutureMoviesGrid(
+          movieList: futureMovieTopRatedList,
+          sectionTitle: 'Top Rated',
+        ),
+      ],
     );
   }
 }
@@ -48,11 +97,11 @@ class _MobileViewState extends State<MobileView> {
             ),
             Column(
               children: [
-                FutureHorizontalMovieList(
+                FutureHorizontalMoviesList(
                   movieList: futureMovieNowPlayingList,
                   sectionTitle: 'Now Playing',
                 ),
-                FutureHorizontalMovieList(
+                FutureHorizontalMoviesList(
                   movieList: futureMovieTopRatedList,
                   sectionTitle: 'Top Rated',
                 ),
@@ -65,11 +114,11 @@ class _MobileViewState extends State<MobileView> {
   }
 }
 
-class FutureHorizontalMovieList extends StatelessWidget {
+class FutureHorizontalMoviesList extends StatelessWidget {
   final Future<List<MovieModel>> movieList;
   final String sectionTitle;
 
-  const FutureHorizontalMovieList(
+  const FutureHorizontalMoviesList(
       {Key? key, required this.movieList, required this.sectionTitle})
       : super(key: key);
 
@@ -90,17 +139,57 @@ class FutureHorizontalMovieList extends StatelessWidget {
               ),
               SizedBox(
                 height: 300,
-                child: Expanded(
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 7,
-                    itemBuilder: (context, index) {
-                      final MovieModel currentMovie = snapshot.data![index];
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 7,
+                  itemBuilder: (context, index) {
+                    final MovieModel currentMovie = snapshot.data![index];
 
-                      return MovieCard(movie: currentMovie);
-                    },
-                  ),
+                    return MovieCard(movie: currentMovie);
+                  },
                 ),
+              ),
+            ],
+          );
+        } else if (snapshot.hasError) {
+          return Text('${snapshot.error}');
+        }
+        return const CircularProgressIndicator();
+      },
+    );
+  }
+}
+
+class FutureMoviesGrid extends StatelessWidget {
+  final Future<List<MovieModel>> movieList;
+  final String sectionTitle;
+
+  const FutureMoviesGrid(
+      {Key? key, required this.movieList, required this.sectionTitle})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<MovieModel>>(
+      future: movieList,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return ListView(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 16.0, right: 16.0, bottom: 16.0),
+                child: Text(sectionTitle,
+                    style: Theme.of(context).textTheme.headline2),
+              ),
+              Wrap(
+                spacing: 6.0,
+                direction: Axis.horizontal,
+                children: snapshot.data!.map((movie) {
+                  return MovieCard(movie: movie, width: 175);
+                }).toList(),
               ),
             ],
           );
@@ -115,8 +204,10 @@ class FutureHorizontalMovieList extends StatelessWidget {
 
 class MovieCard extends StatelessWidget {
   final MovieModel movie;
+  final double? width;
 
-  const MovieCard({Key? key, required this.movie}) : super(key: key);
+  const MovieCard({Key? key, required this.movie, this.width = 150.0})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -128,7 +219,8 @@ class MovieCard extends StatelessWidget {
           }));
         },
         child: SizedBox(
-          width: 150,
+          width: width,
+          height: width! * 1.5,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
