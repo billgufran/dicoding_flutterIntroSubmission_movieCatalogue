@@ -147,12 +147,23 @@ class FutureHorizontalMoviesList extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final MovieModel currentMovie = snapshot.data![index];
 
-                    return MovieCard(
-                      movie: currentMovie,
-                      containerPadding: index == itemCount - 1
+                    return Padding(
+                      padding: index == itemCount - 1
                           ? const EdgeInsets.symmetric(horizontal: 16.0)
                           : const EdgeInsets.only(left: 16.0),
+                      child: MovieCard(
+                        movie: currentMovie,
+                        width: 150.0,
+                      ),
                     );
+
+                    // MovieCard(
+                    //   movie: currentMovie,
+                    //   width: 150.0,
+                    //   containerPadding: index == itemCount - 1
+                    //       ? const EdgeInsets.symmetric(horizontal: 16.0)
+                    //       : const EdgeInsets.only(left: 16.0),
+                    // );
                   },
                 ),
               ),
@@ -181,9 +192,10 @@ class FutureMoviesGrid extends StatelessWidget {
       future: movieList,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return ListView(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
+          return Column(
+            // scrollDirection: Axis.vertical,
+            // shrinkWrap: true,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.only(
@@ -191,19 +203,35 @@ class FutureMoviesGrid extends StatelessWidget {
                 child: Text(sectionTitle,
                     style: Theme.of(context).textTheme.headline2),
               ),
-              Wrap(
-                spacing: 16.0,
-                alignment: WrapAlignment.spaceEvenly,
-                direction: Axis.horizontal,
-                children: snapshot.data!.map((movie) {
-                  return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12.0),
-                      child: MovieCard(
-                          movie: movie,
-                          width: 200,
-                          containerPadding: EdgeInsets.zero));
-                }).toList(),
-              ),
+              // Wrap(
+              //   spacing: 16.0,
+              //   alignment: WrapAlignment.spaceEvenly,
+              //   direction: Axis.horizontal,
+              //   children: snapshot.data!.map((movie) {
+              //     return Padding(
+              //         padding: const EdgeInsets.symmetric(vertical: 12.0),
+              //         child: MovieCard(
+              //             movie: movie,
+              //             width: 200,
+              //             containerPadding: EdgeInsets.zero));
+              //   }).toList(),
+              // ),
+              GridView.extent(
+                  scrollDirection: Axis.vertical,
+                  childAspectRatio: 0.5,
+                  shrinkWrap: true,
+                  maxCrossAxisExtent: 200,
+                  crossAxisSpacing: 16.0,
+                  mainAxisSpacing: 16.0,
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  children: snapshot.data!.map(
+                    (movie) {
+                      return MovieCard(
+                        movie: movie,
+                        width: 200,
+                      );
+                    },
+                  ).toList()),
             ],
           );
         } else if (snapshot.hasError) {
@@ -218,51 +246,49 @@ class FutureMoviesGrid extends StatelessWidget {
 class MovieCard extends StatelessWidget {
   final MovieModel movie;
   final double? width;
-  final EdgeInsetsGeometry? containerPadding;
 
-  const MovieCard(
-      {Key? key,
-      required this.movie,
-      this.width = 150.0,
-      this.containerPadding = const EdgeInsets.only(left: 16.0)})
-      : super(key: key);
+  const MovieCard({
+    Key? key,
+    required this.movie,
+    this.width = 150.0,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: containerPadding!,
+    return SizedBox(
+      width: width,
+      height: width! * 2,
       child: InkWell(
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return DetailScreen(movie: movie);
           }));
         },
-        child: SizedBox(
-          width: width,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.network(
-                  '${Config.mdbImageHost}/w342${movie.posterPath}',
-                  fit: BoxFit.cover,
-                ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.network(
+                '${Config.mdbImageHost}/w342${movie.posterPath}',
+                fit: BoxFit.cover,
+                width: width,
+                height: width! * 1.5,
               ),
-              const SizedBox(height: 8),
-              Text(
-                movie.title ?? "title",
-                style: const TextStyle(fontSize: 14),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              movie.title ?? "title",
+              style: const TextStyle(fontSize: 14),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              movie.releaseDate?.split('-')[0] ?? "subtitle",
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w300,
               ),
-              const SizedBox(height: 4),
-              Text(
-                movie.releaseDate?.split('-')[0] ?? "subtitle",
-                style: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w300,
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
