@@ -14,6 +14,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        primarySwatch: Colors.pink,
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: CustomColors.primaryColor,
+        ),
         scaffoldBackgroundColor: CustomColors.backgroundColor,
         brightness: Brightness.dark,
         fontFamily: 'Roboto',

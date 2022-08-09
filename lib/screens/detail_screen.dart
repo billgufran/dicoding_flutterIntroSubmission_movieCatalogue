@@ -11,6 +11,7 @@ class DetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: const FloatingFavoriteButton(),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,6 +68,33 @@ class DetailScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class FloatingFavoriteButton extends StatefulWidget {
+  const FloatingFavoriteButton({Key? key}) : super(key: key);
+
+  @override
+  State<FloatingFavoriteButton> createState() => _FloatingFavoriteButtonState();
+}
+
+class _FloatingFavoriteButtonState extends State<FloatingFavoriteButton> {
+  bool _isFavorite = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      tooltip: 'Toggle favorite',
+      child: Icon(
+        _isFavorite ? Icons.favorite : Icons.favorite_border,
+        color: CustomColors.accentColor,
+      ),
+      onPressed: () {
+        setState(() {
+          _isFavorite = !_isFavorite;
+        });
+      },
     );
   }
 }
