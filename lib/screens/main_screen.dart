@@ -15,7 +15,9 @@ class MainScreen extends StatelessWidget {
         if (constraints.maxWidth <= 600) {
           return const MobileView();
         } else {
-          return const DesktopView();
+          return DesktopView(
+              currentWidth: constraints.maxWidth,
+              currentHeight: constraints.maxHeight);
         }
       },
     );
@@ -23,7 +25,14 @@ class MainScreen extends StatelessWidget {
 }
 
 class DesktopView extends StatefulWidget {
-  const DesktopView({Key? key}) : super(key: key);
+  final double currentWidth;
+  final double currentHeight;
+
+  const DesktopView({
+    Key? key,
+    required this.currentWidth,
+    required this.currentHeight,
+  }) : super(key: key);
 
   @override
   State<DesktopView> createState() => _DesktopViewState();
@@ -42,10 +51,14 @@ class _DesktopViewState extends State<DesktopView> {
 
   @override
   Widget build(BuildContext context) {
+    var ratio = widget.currentHeight / widget.currentWidth;
     return Scaffold(
       appBar: const CustomAppBar(),
       body: ListView(
         children: [
+          Text(
+              'width ${widget.currentWidth.toString()} x height ${widget.currentHeight.toString()}'),
+          Text(ratio.toString()),
           const SizedBox(height: 38.0),
           FutureMoviesGrid(
             movieList: futureMovieNowPlayingList,
@@ -174,9 +187,11 @@ class FutureMoviesGrid extends StatelessWidget {
   final Future<List<MovieModel>> movieList;
   final String sectionTitle;
 
-  const FutureMoviesGrid(
-      {Key? key, required this.movieList, required this.sectionTitle})
-      : super(key: key);
+  const FutureMoviesGrid({
+    Key? key,
+    required this.movieList,
+    required this.sectionTitle,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -195,9 +210,9 @@ class FutureMoviesGrid extends StatelessWidget {
               ),
               GridView.extent(
                   scrollDirection: Axis.vertical,
-                  childAspectRatio: 0.5,
+                  childAspectRatio: 0.5, //680 - 820
                   shrinkWrap: true,
-                  maxCrossAxisExtent: 200,
+                  maxCrossAxisExtent: 216,
                   crossAxisSpacing: 16.0,
                   mainAxisSpacing: 16.0,
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -249,7 +264,6 @@ class MovieCard extends StatelessWidget {
                 '${Config.mdbImageHost}/w342${movie.posterPath}',
                 fit: BoxFit.cover,
                 width: width,
-                height: width! * 1.5,
               ),
             ),
             const SizedBox(height: 8),
