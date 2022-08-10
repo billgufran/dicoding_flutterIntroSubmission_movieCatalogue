@@ -145,7 +145,8 @@ class DesktopView extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Row(
+                          Wrap(
+                            direction: Axis.horizontal,
                             children: [
                               Text(
                                 movie.title!,
