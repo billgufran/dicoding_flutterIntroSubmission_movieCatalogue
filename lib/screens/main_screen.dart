@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:moviecatalogue/Widgets/custom_app_bar.dart';
 import 'package:moviecatalogue/data/datasource.dart';
@@ -15,9 +16,7 @@ class MainScreen extends StatelessWidget {
         if (constraints.maxWidth <= 600) {
           return const MobileView();
         } else {
-          return DesktopView(
-              currentWidth: constraints.maxWidth,
-              currentHeight: constraints.maxHeight);
+          return const DesktopView();
         }
       },
     );
@@ -25,13 +24,8 @@ class MainScreen extends StatelessWidget {
 }
 
 class DesktopView extends StatefulWidget {
-  final double currentWidth;
-  final double currentHeight;
-
   const DesktopView({
     Key? key,
-    required this.currentWidth,
-    required this.currentHeight,
   }) : super(key: key);
 
   @override
@@ -51,14 +45,10 @@ class _DesktopViewState extends State<DesktopView> {
 
   @override
   Widget build(BuildContext context) {
-    var ratio = widget.currentHeight / widget.currentWidth;
     return Scaffold(
       appBar: const CustomAppBar(),
       body: ListView(
         children: [
-          Text(
-              'width ${widget.currentWidth.toString()} x height ${widget.currentHeight.toString()}'),
-          Text(ratio.toString()),
           const SizedBox(height: 38.0),
           FutureMoviesGrid(
             movieList: futureMovieNowPlayingList,
@@ -127,7 +117,7 @@ class _MobileViewState extends State<MobileView> {
   }
 }
 
-class FutureHorizontalMoviesList extends StatelessWidget {
+class FutureHorizontalMoviesList extends StatefulWidget {
   final Future<List<MovieModel>> movieList;
   final String sectionTitle;
 
@@ -136,11 +126,20 @@ class FutureHorizontalMoviesList extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<FutureHorizontalMoviesList> createState() =>
+      _FutureHorizontalMoviesListState();
+}
+
+class _FutureHorizontalMoviesListState
+    extends State<FutureHorizontalMoviesList> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
   Widget build(BuildContext context) {
     const itemCount = 7;
 
     return FutureBuilder<List<MovieModel>>(
-      future: movieList,
+      future: widget.movieList,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Column(
@@ -149,27 +148,31 @@ class FutureHorizontalMoviesList extends StatelessWidget {
               Padding(
                 padding:
                     const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 8.0),
-                child: Text(sectionTitle,
+                child: Text(widget.sectionTitle,
                     style: Theme.of(context).textTheme.headline2),
               ),
               SizedBox(
                 height: 300,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: itemCount,
-                  itemBuilder: (context, index) {
-                    final MovieModel currentMovie = snapshot.data![index];
+                child: DesktopScrollbar(
+                  controller: _scrollController,
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: itemCount,
+                    itemBuilder: (context, index) {
+                      final MovieModel currentMovie = snapshot.data![index];
 
-                    return Padding(
-                      padding: index == itemCount - 1
-                          ? const EdgeInsets.symmetric(horizontal: 16.0)
-                          : const EdgeInsets.only(left: 16.0),
-                      child: MovieCard(
-                        movie: currentMovie,
-                        width: 150.0,
-                      ),
-                    );
-                  },
+                      return Padding(
+                        padding: index == itemCount - 1
+                            ? const EdgeInsets.symmetric(horizontal: 16.0)
+                            : const EdgeInsets.only(left: 16.0),
+                        child: MovieCard(
+                          movie: currentMovie,
+                          width: 150.0,
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
             ],
@@ -283,5 +286,28 @@ class MovieCard extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class DesktopScrollbar extends StatelessWidget {
+  final ScrollController controller;
+  final Widget child;
+
+  const DesktopScrollbar(
+      {Key? key, required this.controller, required this.child})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final isMobile = !kIsWeb ||
+        defaultTargetPlatform == TargetPlatform.iOS ||
+        defaultTargetPlatform == TargetPlatform.android;
+
+    return isMobile
+        ? child
+        : Scrollbar(
+            controller: controller,
+            child: child,
+          );
   }
 }
