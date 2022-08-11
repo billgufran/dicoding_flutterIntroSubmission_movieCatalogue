@@ -36,6 +36,12 @@ class _DesktopViewState extends State<DesktopView> {
   late Future<List<MovieModel>> futureMovieNowPlayingList;
   late Future<List<MovieModel>> futureMovieTopRatedList;
 
+  /**
+   * It is intentional to put API call inside initState instead of build methot
+   * as recommended in Flutter docs, hence DesktopView needs to be a StatefulWidget.
+   *
+   * https://docs.flutter.dev/cookbook/networking/fetch-data#why-is-fetchalbum-called-in-initstate
+   */
   @override
   void initState() {
     super.initState();
@@ -76,6 +82,12 @@ class _MobileViewState extends State<MobileView> {
   late Future<List<MovieModel>> futureMovieNowPlayingList;
   late Future<List<MovieModel>> futureMovieTopRatedList;
 
+  /**
+   * It is intentional to put API call inside initState instead of build methot
+   * as recommended in Flutter docs, hence MobileView needs to be a StatefulWidget.
+   *
+   * https://docs.flutter.dev/cookbook/networking/fetch-data#why-is-fetchalbum-called-in-initstate
+   */
   @override
   void initState() {
     super.initState();
@@ -117,6 +129,14 @@ class _MobileViewState extends State<MobileView> {
   }
 }
 
+/**
+ * FutureHorizontalMoviesList has a ScrollController, hence it needs to be a StatefulWidget.
+ *
+ * ref:
+ * https://stackoverflow.com/questions/61123348/scrollcontroller-in-statelesswidget
+ * https://github.com/piedcipher/beer-app/issues/2
+ *
+ */
 class FutureHorizontalMoviesList extends StatefulWidget {
   final Future<List<MovieModel>> movieList;
   final String sectionTitle;
@@ -183,6 +203,12 @@ class _FutureHorizontalMoviesListState
         return const CircularProgressIndicator();
       },
     );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 }
 
